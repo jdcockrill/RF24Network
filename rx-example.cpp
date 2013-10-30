@@ -4,7 +4,7 @@
 #include "RF24Network.h"
 #include <ctime>
 #include <stdio.h>
-#include <rrd.h>
+//#include <rrd.h>
 /**
  * g++ -L/usr/lib main.cc -I/usr/include -o main -lrrd
  **/
@@ -46,8 +46,8 @@ struct payload_weather_t
 int main(int argc, char** argv) 
 {
 	// Refer to RF24.h or nRF24L01 DS for settings
-	char    *rrd_argv[2];
-    	int       rrd_argc;
+	//char    *rrd_argv[2];
+    	//int       rrd_argc;
     	char filenameTemp[] = "/root/weather/weather_sensor.rrd";
     	char filenameCurrent[] = "/root/weather/current_sensor.rrd";
     	char command[] = "update";
@@ -73,27 +73,27 @@ int main(int argc, char** argv)
 		    if (header.from_node == 1) {
 		    	    payload_weather_t payload;
 		    	    network.read(header,&payload,sizeof(payload));
-			    rrd_argv[0]= command; 
-			    rrd_argv[1]= filenameTemp; 
-			    rrd_argv[3]= NULL;
-			    rrd_argc=3;
+			    //rrd_argv[0]= command; 
+			    //rrd_argv[1]= filenameTemp; 
+			    //rrd_argv[3]= NULL;
+			    //rrd_argc=3;
 			    printf("N:%.2f:%.2f:%lu\n", payload.temperature, payload.humidity, payload.lux);    
 			    sprintf(values, "N:%.2f:%.2f:%lu", payload.temperature, payload.humidity, payload.lux);    
-			    rrd_argv[2]= values;
-			    rrd_update(rrd_argc, rrd_argv);
+			    //rrd_argv[2]= values;
+			    //rrd_update(rrd_argc, rrd_argv);
 		    }
 
 		    if (header.from_node == 2) {
 		    	    payload_power_t payload;
 		    	    network.read(header,&payload,sizeof(payload));
-			    rrd_argv[0]= command; 
-			    rrd_argv[1]= filenameCurrent; 
-			    rrd_argv[3]= NULL;
-			    rrd_argc=3;
+			    //rrd_argv[0]= command; 
+			    //rrd_argv[1]= filenameCurrent; 
+			    //rrd_argv[3]= NULL;
+			    //rrd_argc=3;
 			    printf("N:%.2f:%.2f\n", payload.power, payload.current);    
 			    sprintf(values, "N:%.2f:%.2f", payload.power, payload.current);    
-			    rrd_argv[2]= values;
-			    rrd_update(rrd_argc, rrd_argv);
+			    //rrd_argv[2]= values;
+			    //rrd_update(rrd_argc, rrd_argv);
 			    
 		    }
 		    //time_t timer;

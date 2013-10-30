@@ -17,7 +17,8 @@
 #include <iostream>  
 #include <algorithm>
 #include "RF24Network_config.h"
-#include "RF24.h"
+#include <RF24.h>
+//#include "librf24-bcm.h"
 #include "RF24Network.h"
 
 uint16_t RF24NetworkHeader::next_id = 1;
@@ -73,6 +74,7 @@ void RF24Network::update(void)
 
       // Read the beginning of the frame as the header
       const RF24NetworkHeader& header = * reinterpret_cast<RF24NetworkHeader*>(frame_buffer);
+      //const RF24NetworkHeader& header = reinterpret_cast<RF24NetworkHeader&>(frame_buffer);
 
       IF_SERIAL_DEBUG(printf_P(PSTR("%lu: MAC Received on %u %s\n\r"),millis(),pipe_num,header.toString()));
       IF_SERIAL_DEBUG(const uint16_t* i = reinterpret_cast<const uint16_t*>(frame_buffer + sizeof(RF24NetworkHeader));printf_P(PSTR("%lu: NET message %04x\n\r"),millis(),*i));
