@@ -1,0 +1,3 @@
+you need to compile libxively and statically link it here. the Makefile expects libxively.a to be in this directory
+
+see http://stackoverflow.com/questions/17661058/include-libraries-with-g
