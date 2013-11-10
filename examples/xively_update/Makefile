@@ -24,7 +24,7 @@ SOURCES = ${PROGRAMS:=.cpp}
 all: ${PROGRAMS}
 
 ${PROGRAMS}: ${SOURCES}
-	g++ ${CCFLAGS} -Wall -I../../ -I../../../libxively/src/libxively/ -lrf24-bcm -lrf24network $@.cpp ./libxively.a -o $@
+	g++ ${CCFLAGS} -Wall -I../../../libxively/src/libxively/ -lrf24-bcm -lrf24network $@.cpp ./libxively.a -o $@
 
 clean:
 	rm -rf $(PROGRAMS)

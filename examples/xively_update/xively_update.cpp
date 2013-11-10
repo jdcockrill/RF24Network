@@ -12,7 +12,7 @@
 /*
 Stuff for xively
 */
-#define XI_FEED_ID YOUR_FEED_ID // set Xively Feed ID (numerical, no quoutes
+#define XI_FEED_ID 1 // set Xively Feed ID (numerical, no quoutes
 #define XI_API_KEY "YOUR_API_KEY" // set Xively API key (double-quoted string) 
 
 // Setup for GPIO 22 CE and CE0 CSN with SPI Speed @ 8Mhz
