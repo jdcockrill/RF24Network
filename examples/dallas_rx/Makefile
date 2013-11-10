@@ -22,7 +22,7 @@ PROGRAMS = dallas_rx
 SOURCES = ${PROGRAMS:=.cpp}
 
 all: ${PROGRAMS}
-
+#-I../../
 ${PROGRAMS}: ${SOURCES}
 	g++ ${CCFLAGS} -Wall -I../../ -lrf24-bcm -lrf24network $@.cpp -o $@
 
