@@ -21,7 +21,8 @@
 #include <string.h>
 #include <sys/time.h>
 #include <stddef.h>
-//class RF24;
+
+class RF24;
 
 /**
  * Header which is sent with each message

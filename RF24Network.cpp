@@ -73,23 +73,24 @@ void RF24Network::update(void)
       done = radio.read( frame_buffer, sizeof(frame_buffer) );
 
       // Read the beginning of the frame as the header
-      const RF24NetworkHeader& header = * reinterpret_cast<RF24NetworkHeader*>(frame_buffer);
-      //const RF24NetworkHeader& header = reinterpret_cast<RF24NetworkHeader&>(frame_buffer);
+      //const RF24NetworkHeader& header = * reinterpret_cast<RF24NetworkHeader*>(frame_buffer);
+      RF24NetworkHeader* pHeader = reinterpret_cast<RF24NetworkHeader*>(frame_buffer);
+      //RF24NetworkHeader header = * reinterpret_cast<RF24NetworkHeader*>(frame_buffer);
 
-      IF_SERIAL_DEBUG(printf_P(PSTR("%lu: MAC Received on %u %s\n\r"),millis(),pipe_num,header.toString()));
+      IF_SERIAL_DEBUG(printf_P(PSTR("%lu: MAC Received on %u %s\n\r"),millis(),pipe_num,pHeader->toString()));
       IF_SERIAL_DEBUG(const uint16_t* i = reinterpret_cast<const uint16_t*>(frame_buffer + sizeof(RF24NetworkHeader));printf_P(PSTR("%lu: NET message %04x\n\r"),millis(),*i));
 
       // Throw it away if it's not a valid address
-      if ( !is_valid_address(header.to_node) )
+      if ( !is_valid_address(pHeader->to_node) )
 	continue;
 
       // Is this for us?
-      if ( header.to_node == node_address )
+      if ( pHeader->to_node == node_address )
 	// Add it to the buffer of frames for us
 	enqueue();
       else
 	// Relay it
-	write(header.to_node);
+	write(pHeader->to_node);
 
       // NOT NEEDED anymore.  Now all reading pipes are open to start.
 #if 0
@@ -97,14 +98,14 @@ void RF24Network::update(void)
       // pipe, it could mean that we are not listening to them.  If so, open up
       // and listen to their talking pipe
 
-      if ( header.to_node == node_address && pipe_num == 0 && is_descendant(header.from_node) )
-      {
-	uint8_t pipe = pipe_to_descendant(header.from_node);
-	radio.openReadingPipe(pipe,pipe_address(node_address,pipe));
+      //if ( header.to_node == node_address && pipe_num == 0 && is_descendant(header.from_node) )
+      //{
+	//uint8_t pipe = pipe_to_descendant(header.from_node);
+	//radio.openReadingPipe(pipe,pipe_address(node_address,pipe));
 
 	// Also need to open pipe 1 so the system can get the full 5-byte address of the pipe.
-	radio.openReadingPipe(1,pipe_address(node_address,1));
-      }
+	//radio.openReadingPipe(1,pipe_address(node_address,1));
+      //}
 #endif
     }
   }
