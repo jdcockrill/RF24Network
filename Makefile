@@ -16,10 +16,14 @@ PREFIX=/usr/local
 # Library parameters
 # where to put the lib
 LIBDIR=$(PREFIX)/lib
+# where to put the header files
+INCDIR=${PREFIX}/include
 # lib name 
 LIB_RFN=librf24network
 # shared library name
 LIBNAME_RFN=$(LIB_RFN).so.1.0
+
+HEADERS=RF24Network_config.h RF24Network.h Sync.h
 
 # The recommended compiler flags for the Raspberry Pi
 CCFLAGS=-Ofast -mfpu=vfp -mfloat-abi=hard -march=armv6zk -mtune=arm1176jzf-s
@@ -48,6 +52,7 @@ install:
 	@echo "[Install]"
 	@if ( test ! -d $(PREFIX)/lib ) ; then mkdir -p $(PREFIX)/lib ; fi
 	@install -m 0755 ${LIBNAME_RFN} ${LIBDIR}
+	@install ${HEADERS} ${INCDIR}
 	@ln -sf ${LIBDIR}/${LIBNAME_RFN} ${LIBDIR}/${LIB_RFN}.so.1
 	@ln -sf ${LIBDIR}/${LIBNAME_RFN} ${LIBDIR}/${LIB_RFN}.so
 	@ldconfig
