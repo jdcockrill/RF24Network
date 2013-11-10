@@ -26,7 +26,6 @@ struct payload_t
 void setup(void)
 {
   printf("\n\rRF24/DallasNRFNet_rx/\n\r");
-  printf("%d", sizeof(float));
   //
   // Setup and configure rf radio
   //
