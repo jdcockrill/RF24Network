@@ -12,8 +12,8 @@
 /*
 Stuff for xively
 */
-#define XI_FEED_ID 1 // set Xively Feed ID (numerical, no quoutes
-#define XI_API_KEY "YOUR_API_KEY" // set Xively API key (double-quoted string) 
+#define XI_FEED_ID 1804461810 // set Xively Feed ID (numerical, no quoutes
+#define XI_API_KEY "xf82asu7Ddt4YxVi4ef2wmnQdLIbrPAkPzRKh1eoCmsQFujZ" // set Xively API key (double-quoted string) 
 
 // Setup for GPIO 22 CE and CE0 CSN with SPI Speed @ 8Mhz
 RF24 radio(RPI_V2_GPIO_P1_15, BCM2835_SPI_CS0, BCM2835_SPI_SPEED_8MHZ);
@@ -37,6 +37,8 @@ void setup(void)
   // Setup and configure rf radio
   radio.begin();
   network.begin(/*channel*/90, /*node_address*/this_node);
+
+  // configure the various data-streams here.
 }
 
 int main(int argc, char** argv)
@@ -52,19 +54,12 @@ int main(int argc, char** argv)
   xi_context_t* xi_context
         = xi_create_context( XI_HTTP, XI_API_KEY, feed.feed_id );
 
+  xi_datapoint_t current_temp;
+
   if( xi_context == NULL )
   {
     return -1;
   }
-
-  xi_datapoint_t current_temp;
-  xi_set_value_f32( &current_temp, 11.1 );
-  { // get actual timestamp
-    time_t timer = 0;
-    time( &timer );
-    current_temp.timestamp.timestamp = timer;
-  }
-  xi_datastream_update( xi_context, XI_FEED_ID, "mobile_temperature", &current_temp );
 
   while(1)
   {
@@ -90,7 +85,12 @@ int main(int argc, char** argv)
         time( &timer );
         current_temp.timestamp.timestamp = timer;
       }
-      xi_datastream_update( xi_context, XI_FEED_ID, "mobile_temperature", &current_temp );
+      // find the stream-name to use
+      if ( payload.node_id == 1 ) {
+        xi_datastream_update( xi_context, XI_FEED_ID, "001_mobile_temp", &current_temp );
+      } else if ( payload.node_id == 2 ) {
+        xi_datastream_update( xi_context, XI_FEED_ID, "002_mobile_temp", &current_temp );
+      }
     }  
   }
 }
